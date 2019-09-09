@@ -30,7 +30,7 @@ int last_modified(const char *filepath, time_t *time)
     *time = attr.st_mtime;
     return 0;
 
-#elif defined(_WIN32)
+#elif defined(_WIN32) || defined(__EMSCRIPTEN__)
 
     // CreateFile opens file (see flag OPEN_EXISTING)
     HANDLE hFile = CreateFile(
