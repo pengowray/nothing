@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "system/nth_alloc.h"
-#ifdef __linux__
+#if defined(__linux__) || defined(__EMSCRIPTEN__)
 #include <sys/stat.h>
 #include <sys/types.h>
 #elif defined(_WIN32)
@@ -20,7 +20,7 @@ int last_modified(const char *filepath, time_t *time)
     trace_assert(filepath);
     trace_assert(time);
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__EMSCRIPTEN__)
 
     struct stat attr;
     if (stat(filepath, &attr) < 0) {
@@ -30,7 +30,7 @@ int last_modified(const char *filepath, time_t *time)
     *time = attr.st_mtime;
     return 0;
 
-#elif defined(_WIN32) || defined(__EMSCRIPTEN__)
+#elif defined(_WIN32)
 
     // CreateFile opens file (see flag OPEN_EXISTING)
     HANDLE hFile = CreateFile(
